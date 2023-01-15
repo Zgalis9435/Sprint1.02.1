@@ -2,53 +2,92 @@ package exceptions_activity;
 
 import java.util.*;
 
-
-/*Crea una classe anomenada "Producte" amb els atributs nom i preu, i una altra classe anomenada "Venda". Aquesta classe té com a atributs una col·lecció de productes i el preu total de la venda.
-La classe "Venda", té un mètode anomenat calcularTotal() que llança l’excepció personalitzada VendaBuidaException i mostra per pantalla “Per fer una venda primer has d’afegir productes” si la col·lecció de productes està buida. Si la col·lecció té productes, llavors ha de recórrer la col·lecció i guardar la suma de tots els preus dels productes a l’atribut preu total de la venda.
-L’excepció personalitzada VendaBuidaException ha de ser filla de la classe Exception. Al seu constructor li hem de passar el missatge  “Per fer una venda primer has d’afegir productes” i quan capturem l’excepció, l’hem de mostrar per pantalla amb el mètode getMessage() de l’excepció.
-Escriu el codi necessari per a generar i capturar una excepció de tipus ArrayIndexOutOfBoundsException*/
-
 public class Sale {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		
-		//Attributes
-		
-		ArrayList<Product> productList= new ArrayList();
-		double totalPrice=0;
-		double productPrice=0;
-		String productName="null";
-		Product product1=new Product(productName,productPrice);
-		
-		//Main code
-		
-	}
-	public static int calcTotalPrice (ArrayList<Product> productList){
-		//Attributes
-		
-		int i=0;
-		int j=0;
-		double price=0;
-		double finalPrice=0;
-		
-		
-		//Method code
-		
-		try{
-			
-			//Without exception
-			
-			for (i=0;i<productList.size();i++){
-				price = productList.get(i).getPrice();
-				finalPrice=price+finalPrice;
-				
-			} catch
+
+		// Attributes
+
+		ArrayList<Product> productList = new ArrayList();
+		Scanner uo = new Scanner(System.in);
+		Product product1 = new Product(null, 0);
+		Product product2 = new Product(null, 0);
+		Product product3 = new Product(null, 0);
+		int userOption = 0;
+		int userProduct = 0;
+
+		// Main code
+		while (userOption == 0) {
+			System.out.println("Escull una opció per continuar: " + "\n 1. Afegir un producte a la cistella. "
+					+ "\n 2. Passar per caixa. ");
+			userOption = uo.nextInt();
+			switch (userOption) {
+
+			case 1:
+				userProduct = 0;
+				while (userProduct == 0) {
+					System.out.println("Quin producte vols afegir? " + "\n 1. Tomàquets, per 2,99€"
+							+ "\n 2. Choco Crispies, per 5,99€." + "\n 3. Salmó, per 8,99€. ");
+					userProduct = uo.nextInt();
+					switch (userProduct) {
+					case 1:
+						product1.setName("Tomáquets");
+						product1.setPrice(2.99);
+						productList.add(product1);
+						break;
+					case 2:
+						product2.setName("Choco Crispies");
+						product2.setPrice(5.99);
+						productList.add(product2);
+						break;
+					case 3:
+						product3.setName("Salmó");
+						product3.setPrice(8.99);
+						productList.add(product3);
+						break;
+					}
+				}
+
+				userOption = 0;
+				break;
+			case 2:
+				try {
+					calcTotalPrice(productList);
+
+				}
+
+				catch (VendaBuidaException e) {
+					System.out.println("La venda no es possible per el següent motiu: " + e.getMessage());
+					userOption = 0;
+				}
+
+			}
+
 		}
+
+	}
+
+	public static void calcTotalPrice(ArrayList<Product> productList) throws VendaBuidaException {
 		
-			
-		
-		
+		// Attributes
+
+		int i = 0;
+		double price = 0;
+		double finalPrice = 0;
+
+		// Throw Exception
+
+		if (productList.size() == 0) {
+			throw new VendaBuidaException("Per fer una venda primer has d'afegir productes.");
+		} else {
+			while (i < productList.size()) {
+				price = productList.get(i).getPrice();
+				finalPrice = price + finalPrice;
+				i++;
+			}
+			System.out.println("El total es: " + finalPrice + "€, moltes gracies.");
+		}
 	}
 
 }
